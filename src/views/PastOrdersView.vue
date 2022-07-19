@@ -14,6 +14,9 @@
         </tr>
       </thead>
       <tbody>
+        <p v-for="(str, i) in pastorders" :key="i">
+          {{ str }}
+        </p>
         <tr>
           <td><i class="icofont-carrot icofont-4x" /></td>
           <td>Carrot</td>
@@ -22,15 +25,16 @@
           <td>$1.00</td>
           <td><button class="btn btn-dark">Add</button></td>
         </tr>
-        <tr>
-          <td><i class="icofont-banana icofont-4x" /></td>
-          <td>Banana</td>
-          <td>$0.50</td>
-          <td>10</td>
-          <td>$5.00</td>
-          <td><button class="btn btn-dark">Add</button></td>
-        </tr>
+
       </tbody>
     </table>
   </main>
 </template>
+
+<script>
+export default {
+  props: ['pastorders'],
+  components: {
+  }
+}
+</script>

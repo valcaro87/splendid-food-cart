@@ -10,6 +10,7 @@
       </h1>
 
       <div class="cart-body">
+        <p>{{ sdts() }}</p>
         <table class="cart-table">
           <thead>
             <tr>
@@ -27,7 +28,7 @@
 
                 <i :class="'icofont-'+ getPriceIcon(key)[1] + ' icofont-2x'"></i>
               </td>
-              <td>{{ key }}</td>
+              <td>{{ getPriceIcon(key)[2] }}</td>
               <td>${{ getPriceIcon(key)[0] }}</td>
               <td class="center">{{ quantity }}</td>
               <td>${{ (quantity * getPriceIcon(key)[0]).toFixed(2) }}</td>
@@ -48,7 +49,7 @@
         </p>
         <div class="spread">
           <span><strong>Total:</strong> $ {{ overallTotal() }}</span>
-          <button class="btn btn-light">Checkout</button>
+          <button @click="checkOut" class="btn btn-light">Checkout</button>
         </div>
       </div>
     </div>
@@ -64,20 +65,21 @@
 
 <script>
 export default {
-  props: ['toggle', 'cart', 'inventory', 'removeproduct'],
+  props: ['toggle', 'cart', 'inventory', 'removeproduct', 'sdts', 'checkOut'],
   computed: {
 
   },
   methods: {
-    getPriceIcon (name) {
+    getPriceIcon (id) {
       const product = this.inventory.find((p) => {
-        return p.name === name
+        return p.id === parseInt(id)
       })
-      return [product.price.USD, product.icon]
+      return [product.price.USD, product.icon, product.name]
     },
     overallTotal () {
-      console.log(Object.values(this.cart)) // array of
-      console.log(Object.keys(this.cart)) // array of quantity
+      // console.log(this.cart)
+      // console.log(Object.values(this.cart)) // array of
+      // console.log(Object.keys(this.cart)) // array of quantity
       // Object.values(this.cart).reduce((acc, curr, index) => {
       //   console.log(index)
       //   console.log(curr)
@@ -90,6 +92,11 @@ export default {
       }, 0)
 
       return vtotal.toFixed(2)
+    }
+  },
+  data () {
+    return {
+      // sdtsz: parseInt(this.sdts())
     }
   }
 }
