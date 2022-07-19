@@ -10,6 +10,7 @@
       </h1>
 
       <div class="cart-body">
+        <p>{{ sdts() }}</p>
         <table class="cart-table">
           <thead>
             <tr>
@@ -23,11 +24,14 @@
           </thead>
           <tbody>
             <tr v-for="(quantity, key, id) in cart" :key="id">
-              <td><i class="icofont-carrot icofont-3x"></i></td>
-              <td>{{ key }}</td>
-              <td>${{ getPrice(key) }}</td>
+              <td>
+
+                <i :class="'icofont-'+ getPriceIcon(key)[1] + ' icofont-2x'"></i>
+              </td>
+              <td>{{ getPriceIcon(key)[2] }}</td>
+              <td>${{ getPriceIcon(key)[0] }}</td>
               <td class="center">{{ quantity }}</td>
-              <td>${{ (quantity * getPrice(key)).toFixed(2) }}</td>
+              <td>${{ (quantity * getPriceIcon(key)[0]).toFixed(2) }}</td>
               <td class="center">
                 <button
                   @click="removeproduct(key)"
@@ -44,30 +48,38 @@
           <em>No items in cart</em>
         </p>
         <div class="spread">
-          <span><strong>Total:</strong> {{ overallTotal() }}</span>
-          <button class="btn btn-light">Checkout</button>
+          <span><strong>Total:</strong> $ {{ overallTotal() }}</span>
+          <button @click="checkOut" class="btn btn-light">Checkout</button>
         </div>
       </div>
     </div>
   </aside>
 </template>
 
+<style scope>
+  tr {
+    border-top: 18px solid transparent;
+    border-bottom: 18px solid transparent;
+  }
+</style>
+
 <script>
 export default {
-  props: ['toggle', 'cart', 'inventory', 'removeproduct'],
+  props: ['toggle', 'cart', 'inventory', 'removeproduct', 'sdts', 'checkOut'],
   computed: {
 
   },
   methods: {
-    getPrice (name) {
+    getPriceIcon (id) {
       const product = this.inventory.find((p) => {
-        return p.name === name
+        return p.id === parseInt(id)
       })
-      return product.price.USD
+      return [product.price.USD, product.icon, product.name]
     },
     overallTotal () {
-      console.log(Object.values(this.cart)) // array of
-      console.log(Object.keys(this.cart)) // array of quantity
+      // console.log(this.cart)
+      // console.log(Object.values(this.cart)) // array of
+      // console.log(Object.keys(this.cart)) // array of quantity
       // Object.values(this.cart).reduce((acc, curr, index) => {
       //   console.log(index)
       //   console.log(curr)
@@ -76,10 +88,15 @@ export default {
       // const names = Object.keys(this.cart)
       // key //value
       const vtotal = Object.entries(this.cart).reduce((acc, curr, index) => {
-        return acc + (curr[1] * this.getPrice(curr[0]))
+        return acc + (curr[1] * this.getPriceIcon(curr[0])[0])
       }, 0)
 
       return vtotal.toFixed(2)
+    }
+  },
+  data () {
+    return {
+      // sdtsz: parseInt(this.sdts())
     }
   }
 }

@@ -20,40 +20,24 @@
 
   </header>
 
-  <router-view :inventory="inventory" :addToCart="addToCart" />
+  <router-view :inventory="inventory" :addToCart="addToCart" :sdtpc="sendDataToProductCard" :pastorders="pastorders" />
 
   <SideBar
     v-if="sidebarVisible"
-    :toggle="ToggleSideBar"
-    :cart="cart"
-    :inventory="inventory"
-    :removeproduct="removeProduct"
+    :toggle = "ToggleSideBar"
+    :cart = "cart"
+    :inventory = "inventory"
+    :removeproduct = "removeProduct"
+    :sdts = "sendDataToSidebar"
+    :checkOut = "checkOut"
+    :pastorders = "pastorders"
   />
 
 </template>
 
 <style scope>
 /* scope only affects local file, not global */
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-} */
 </style>
 
 <script>
@@ -66,9 +50,11 @@ export default {
   },
   data () {
     return {
-      sidebarVisible: false,
+      sidebarVisible: true,
       inventory: food,
-      cart: {}
+      cart: {},
+      pastorders: [],
+      idz: 0
     }
   },
   computed: {
@@ -79,9 +65,9 @@ export default {
     }
   },
   methods: {
-    addToCart (name, quantity) {
-      if (!this.cart[name]) this.cart[name] = 0
-      this.cart[name] += quantity // this.inventory[index].quantity
+    addToCart (id, quantity) {
+      if (!this.cart[id]) this.cart[id] = 0
+      this.cart[id] += quantity // this.inventory[index].quantity
       // this.inventory[index].quantity = 0
       // console.log(this.cart[name]) // quantity
     },
@@ -90,6 +76,23 @@ export default {
     },
     removeProduct (key) {
       delete this.cart[key]
+    },
+    sendDataToSidebar () {
+      return 'Checking out...'
+    },
+    sendDataToProductCard () {
+      return 'Add to cart'
+    },
+    checkOut () {
+      this.idz++
+      // this.pastorders[this.idz] = this.cart
+      // const curNum = this.idz
+      const curCart = [this.cart]
+      this.pastorders[this.idz] = JSON.stringify(curCart)
+      // this.pastorders.push(this.pastorders[this.idz])
+    },
+    updated () {
+
     }
   }
 }

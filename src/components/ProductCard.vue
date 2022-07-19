@@ -4,7 +4,7 @@
       {{ product.name }}
     </div>
     <div class="card-body">
-      <i class="icofont-10x icofont-{{product.icon}}"></i>
+      <i :class="'icofont-10x icofont-'+product.icon"></i>
       <form>
         <div class="row">
           <div class="cell">
@@ -31,8 +31,8 @@
       </form>
     </div>
     <div class="card-footer">
-      <button class="btn btn-light" @click="addToCart(product.name, quantity)">
-        Add to cart
+      <button class="btn btn-light" @click="addToCart(product.id, quantity)">
+        {{ sdtpc()}}
       </button>
     </div>
   </div>
@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  props: ['product', 'id', 'addToCart'],
+  props: ['product', 'id', 'addToCart', 'sdtpc'],
   data () {
     return {
       quantity: 0

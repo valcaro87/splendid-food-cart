@@ -10,6 +10,7 @@
         :id="id"
         :product="product"
         :addToCart="addToCart"
+        :sdtpc = "sdtpc"
       />
     </div>
 
@@ -20,7 +21,7 @@
 import ProductCard from '@/components/ProductCard.vue'
 
 export default {
-  props: ['inventory', 'addToCart'],
+  props: ['inventory', 'addToCart', 'sdtpc'],
   components: {
     ProductCard
   }
